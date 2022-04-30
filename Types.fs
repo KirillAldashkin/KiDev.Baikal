@@ -19,7 +19,6 @@ type Source =
     | Remove of string
 
 type Project = {
-    IsWritten: bool
     Sdk: string
     TargetFramework: string
     TargetFrameworkPlatform: string
@@ -31,11 +30,18 @@ type Project = {
     Depedencies: Depedency list
 }
 
+type Parameters = {
+    Task: string
+    Body: string
+    Target: string
+    Arguments: Map<string, string>
+}
+
 type Solution = {
+    Parameters: Parameters
     Directory: string
     Projects: Project list
-    Arguments: Map<string, string>
-    Keys: string list
+    Tasks: Map<string, Solution -> Unit>
 }
 
 type DotNetVersion = {

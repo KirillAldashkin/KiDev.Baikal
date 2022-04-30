@@ -2,8 +2,7 @@
 
 [<AutoOpen>]
 module Projects =
-    let private empty lang: Project = {
-        IsWritten = false;
+    let private emptyProject lang: Project = {
         TargetFramework = "current";
         TargetFrameworkPlatform = "";
         Sdk = "Microsoft.NET.Sdk";
@@ -23,12 +22,11 @@ module Projects =
         { project with Sources = project.Sources.Add(name, newSrc) }
 
 
-
     /// Creates a new C# project.
-    let cs() = { empty "cs" with Properties = Map [ ("ImplicitUsings", "true"); ("Nullable", "enable") ] }
+    let cs() = { emptyProject "cs" with Properties = Map [ ("ImplicitUsings", "true"); ("Nullable", "enable") ] }
 
     /// Creates a new F# project.
-    let fs() = { empty "fs" with Properties = Map [("GenerateDocumentationFile", "true")] }
+    let fs() = { emptyProject "fs" with Properties = Map [("GenerateDocumentationFile", "true")] }
     
     /// Sets name of a project.
     let name name (project: Project) = { project with Name = name }

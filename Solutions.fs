@@ -2,38 +2,60 @@
 
 [<AutoOpen>]
 module Solutions =
-    let mutable private cliArgs = Map<string, string>([])
-    let mutable private cliKeys: string list = []
+    let mutable private cliTask = ""
+    let mutable private cliBody = ""
+    let mutable private cliArgs = Map<string, string> []
+
+    let defaultTasks = Map [ 
+        ("dotnet", dotnetTask);
+        ("run", runTask);
+        ("build", buildTask);
+    ]
 
     do
-        let args: seq<string> = System.Environment.GetCommandLineArgs()
+        // first item is executable file path, and second item is script file name.
+        let args: seq<string> = System.Environment.GetCommandLineArgs()[2..]
         let enum = args.GetEnumerator()
-        while enum.MoveNext() do
-            if enum.Current[0] = '-' then 
-                let key = enum.Current[1..]
+        if enum.MoveNext() then 
+            cliTask <- enum.Current
+            let mutable notFinished = true
+            while (notFinished <- enum.MoveNext(); notFinished) && enum.Current[0] <> '!' do
+                cliBody <- cliBody + enum.Current + " "
+            if notFinished then
+                let firstKey = enum.Current[1..]
                 if enum.MoveNext() then
-                    let value = enum.Current
-                    cliArgs <- cliArgs.Add(key, value)
-                else
-                    cliKeys <- key :: cliKeys
-            else
-                cliKeys <- enum.Current :: cliKeys
-
-
+                    cliArgs <- cliArgs.Add(firstKey, enum.Current)
+                    while enum.MoveNext() do
+                        let key = enum.Current[1..]
+                        if enum.MoveNext() then 
+                            cliArgs <- cliArgs.Add(key, enum.Current)
 
     /// Creates a new solution in a specified folder.
-    let solution folder = { 
+    let solution folder = {
+        Parameters = {
+            Target = "";
+            Arguments = cliArgs;
+            Task = cliTask;
+            Body = cliBody;
+        };
+        Tasks = defaultTasks;
         Directory = folder; 
         Projects = []; 
-        Arguments = cliArgs; 
-        Keys = cliKeys 
     }
 
     /// Sets a argument in a solution.
-    let arg key value (solution: Solution) = { solution with Arguments = solution.Arguments.Add(key, value) }
+    let arg key value (solution: Solution) = 
+        let newArgs = solution.Parameters.Arguments.Add(key, value)
+        let newParams = { solution.Parameters with Arguments = newArgs }
+        { solution with Parameters = newParams } 
 
-    /// Sets a key in a solution.
-    let key name (solution: Solution) = { solution with Keys = name :: solution.Keys }
+    /// Sets a argument in a solution.
+    let target name (solution: Solution) = 
+        let newParams = { solution.Parameters with Target = name }
+        { solution with Parameters = newParams } 
 
     /// Adds project to a solution.
     let addProject (project: Project) (solution: Solution) = { solution with Projects = project :: solution.Projects }
+
+    /// Adds task to a solution.
+    let addTask name task (solution: Solution) = { solution with Tasks = solution.Tasks.Add(name, task) }

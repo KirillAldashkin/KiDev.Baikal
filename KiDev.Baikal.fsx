@@ -7,7 +7,7 @@ solution(__SOURCE_DIRECTORY__)
         |> prop "Description" "Use short F# scripts to define .NET projects and solutions!"
         |> prop "PackageId" "KiDev.Baikal"
         |> prop "PackageLicenseExpression" "MIT"
-        |> prop "Version" "0.2.0"
+        |> prop "Version" "0.2.1"
         |> prop "Authors" "AldashkinKirill"
         |> none [
             Add "KiDev.Baikal.fsx";
@@ -20,8 +20,9 @@ solution(__SOURCE_DIRECTORY__)
             Add "Types.fs";
             Add "SDKResolver.fs";
             Add "Projects.fs";
-            Add "Solutions.fs";
             Add "XMLWriter.fs";
+            Add "DefaultTasks.fs";
+            Add "Solutions.fs";
             Add "Runner.fs"
         ])
     |> run
