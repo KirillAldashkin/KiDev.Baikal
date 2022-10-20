@@ -23,40 +23,79 @@ module Projects =
 
 
     /// Creates a new C# project.
-    let cs() = { emptyProject "cs" with Properties = Map [ ("ImplicitUsings", "true"); ("Nullable", "enable") ] }
+    let CS() = { emptyProject "cs" with Properties = Map [ ("ImplicitUsings", "true"); ("Nullable", "enable") ] }
 
     /// Creates a new F# project.
-    let fs() = { emptyProject "fs" with Properties = Map [("GenerateDocumentationFile", "true")] }
+    let FS() = { emptyProject "fs" with Properties = Map [("GenerateDocumentationFile", "true")] }
     
     /// Sets name of a project.
-    let name name (project: Project) = { project with Name = name }
+    let Name name (project: Project) = { project with Name = name }
 
     /// Sets folder of a project.
-    let folder folder (project: Project) = { project with Folder = folder }
+    let Folder folder (project: Project) = { project with Folder = folder }
 
     /// Sets "TargetFramework" version of a project.
-    let framework version (project: Project) = { project with TargetFramework = version }
+    let TargetFramework version (project: Project) = { project with TargetFramework = version }
 
-    /// Sets "TargetFramework" platform of a project.
-    let platform kind (project: Project) = { project with TargetFrameworkPlatform = if kind = "" then "" else $"-{kind}" }
+    /// Sets "TargetPlatform" property of a project.
+    let TargetPlatform kind (project: Project) = { project with TargetFrameworkPlatform = if kind = "" then "" else $"-{kind}" }
 
     /// Adds "Compile" sources to a project
-    let compile list (project: Project) = addSource "Compile" list project
+    let Compile list (project: Project) = addSource "Compile" list project
 
     /// Adds "EmbeddedResource" sources to a project
-    let embeddedResource list (project: Project) = addSource "EmbeddedResource" list project
+    let EmbeddedResource list (project: Project) = addSource "EmbeddedResource" list project
 
     /// Adds "None" sources to a project
-    let none list (project: Project) = addSource "None" list project
+    let None list (project: Project) = addSource "None" list project
 
     /// Adds depedencies to a project.
-    let depedencies list (project: Project) = { project with Depedencies = List.append project.Depedencies list }
+    let Depedencies list (project: Project) = { project with Depedencies = List.append project.Depedencies list }
+
+    /// Creates an "Include" item.
+    let Include cont:Source = { Content = cont; Type = "Include"; CopyToOutputDirectory = "Never"; }
+
+    /// Creates an "Exclude" item
+    let Exclude cont:Source = { Content = cont; Type = "Exclude"; CopyToOutputDirectory = "Never"; }
+
+    /// Creates an "Remove" item
+    let Remove cont:Source = { Content = cont; Type = "Remove"; CopyToOutputDirectory = "Never"; }
+
+    /// Creates an "Update" item
+    let Update cont:Source = { Content = cont; Type = "Update"; CopyToOutputDirectory = "Never"; }
+
+    let CopyToOutput copy (item:Source) = { item with CopyToOutputDirectory = copy }
+    let Never = "Never"
+    let Always = "Always"
+    let OnlyNew = "PreserveNewest"
 
     /// Sets property of a project.
-    let prop name value (project: Project) = { project with Properties = project.Properties.Add(name, value) }
+    let Prop name value (project: Project) = { project with Properties = project.Properties.Add(name, value) }
 
     /// Creates a NuGet depedency.
-    let nuget id version = NuGet { Id = id; Version = version; }
+    let NuGet id version = NuGet { Id = id; Version = version; }
 
     /// Creates a project depedency.
-    let project name = Project { Name = name; ResolvedPath = ""; }
+    let Project name = Project { Name = name; ResolvedPath = ""; }
+
+    /// Sets "LangVersion" of a project.
+    let LangVersion vers (project: Project) = project |> Prop "LangVersion" (string vers)
+    let Preview = "preview"
+    let Latest = "latest"
+    let LatestMajor = "latestMajor"
+
+    /// Sets "AllowUnsafeBlocks" of a project.
+    let AllowUnsafe (allow: bool) (project: Project) = project |> Prop "AllowUnsafeBlocks" (if allow then "true" else "false")
+
+    /// Sets project's OutputType.
+    let OutputType otype (project: Project) = Prop "OutputType" otype project
+    let Library = "library"
+    let Exe = "exe"
+    let WinExe = "winExe"
+
+    /// Confogures project as WinForms (OutputType=WinExe; TargetPlatform=Windows; UseWindowsForms=true)
+    let WinForms (project: Project) = 
+        project 
+        |> OutputType WinExe
+        |> TargetPlatform "windows"
+        |> Prop "UseWindowsForms" "true"

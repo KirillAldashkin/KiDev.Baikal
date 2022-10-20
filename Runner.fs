@@ -10,7 +10,7 @@ module Runner =
         for folder in from.Folder.Split sep do
             downPath <- downPath + (if folder = "." then "." else "..") + sep.ToString()
         let project = List.find(fun p -> p.Name = depedency.Name) solution.Projects
-        Project { depedency with ResolvedPath = Path.Combine(downPath, project.Folder, $"\"{project.Name}.{project.Language}proj\"") }
+        Depedency.Project { depedency with ResolvedPath = Path.Combine(downPath, project.Folder, $"{project.Name}.{project.Language}proj") }
 
     let private validateProject (solution: Solution) (project: Project): Result<Project, string> =
         let mutable project = project
@@ -30,6 +30,8 @@ module Runner =
         project <- { project with Properties = project.Properties.Add("TargetFramework", targetFramework) }
         if errors = "" then Ok project else Error errors
 
+    let ( *? ) a b = (if a = null then b else a)
+
     let private writeProject (solution: Solution) (project: Project) =
         let path = Path.Combine(solution.Directory, project.Folder, $"{project.Name}.{project.Language}proj")
         let writer = new StreamWriter(path)
@@ -43,9 +45,9 @@ module Runner =
                 if not pair.Value.IsEmpty then
                     xml.tagGroup("ItemGroup", fun() -> 
                         for source in pair.Value do
-                            match source with
-                                | Add add -> xml.tag($"{pair.Key} Include=\"{add}\"")
-                                | Remove remove -> xml.tag($"{pair.Key} Remove=\"{remove}\"")
+                            xml.tagGroup(pair.Key, $"{source.Type}=\"{source.Content}\"", fun () -> 
+                                xml.tag("CopyToOutputDirectory", source.CopyToOutputDirectory *? "Never")
+                            )
                     )
             if not project.Depedencies.IsEmpty then
                 xml.tagGroup("ItemGroup", fun() -> 
@@ -66,7 +68,7 @@ module Runner =
     let private updateDepedencies (solution: Solution) (project: Project) = 
         let checkedDeps = [ for depedency in project.Depedencies do 
                                 match depedency with
-                                    | NuGet nuget -> NuGet nuget
+                                    | NuGet nuget -> NuGet nuget.Id nuget.Version
                                     | Project proj -> resolve solution project proj ]
         { project with Depedencies = checkedDeps }
 

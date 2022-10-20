@@ -31,7 +31,7 @@ module Solutions =
                             cliArgs <- cliArgs.Add(key, enum.Current)
 
     /// Creates a new solution in a specified folder.
-    let solution folder = {
+    let Solution folder = {
         Parameters = {
             Target = "";
             Arguments = cliArgs;
@@ -44,18 +44,18 @@ module Solutions =
     }
 
     /// Sets a argument in a solution.
-    let arg key value (solution: Solution) = 
+    let Arg key value (solution: Solution) = 
         let newArgs = solution.Parameters.Arguments.Add(key, value)
         let newParams = { solution.Parameters with Arguments = newArgs }
         { solution with Parameters = newParams } 
 
     /// Sets a argument in a solution.
-    let target name (solution: Solution) = 
+    let Target name (solution: Solution) = 
         let newParams = { solution.Parameters with Target = name }
         { solution with Parameters = newParams } 
 
     /// Adds project to a solution.
-    let addProject (project: Project) (solution: Solution) = { solution with Projects = project :: solution.Projects }
+    let AddProject (project: Project) (solution: Solution) = { solution with Projects = project :: solution.Projects }
 
     /// Adds task to a solution.
-    let addTask name task (solution: Solution) = { solution with Tasks = solution.Tasks.Add(name, task) }
+    let AddTask name task (solution: Solution) = { solution with Tasks = solution.Tasks.Add(name, task) }

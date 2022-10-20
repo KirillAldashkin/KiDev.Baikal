@@ -14,9 +14,11 @@ type Depedency =
     | NuGet of NuGetDepedency
     | Project of ProjectDepedency
 
-type Source = 
-    | Add of string
-    | Remove of string
+type Source = {
+    Content: string
+    Type: string
+    CopyToOutputDirectory: string
+}
 
 type Project = {
     Sdk: string
