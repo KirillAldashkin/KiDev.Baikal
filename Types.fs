@@ -67,3 +67,9 @@ type DotNetVersion = {
     Version: System.Version
     Prefix: string
 }
+
+type NuGetPackagingInfo = {
+    Description: string option
+    License: string option
+    Authors: string list option
+}
