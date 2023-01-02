@@ -2,13 +2,6 @@
 open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
-    |> SlnFile(Unnamed
-        |> AddFolder "files" [
-            SlnItem ".gitignore";
-            SlnItem "README.md";
-            SlnItem "LICENSE";
-            SlnItem "KiDev.Baikal.fsx";
-        ])
     |> AddProject(FS()
         |> TargetFramework "netstandard2.0"
         |> Prop "Description" "Use short F# scripts to define .NET projects and solutions!"
