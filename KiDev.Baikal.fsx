@@ -1,4 +1,4 @@
-#r "bin/Debug/netstandard2.0/KiDev.Baikal.dll"
+#r "nuget: KiDev.Baikal, 0.2.3"
 open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
@@ -20,6 +20,8 @@ Solution(__SOURCE_DIRECTORY__)
             Include "Types.fs";
             Include "SDKResolver.fs";
             Include "Projects.fs";
+            Include "Projects.Depedencies.fs";
+            Include "Projects.SourceItems.fs";
             Include "XMLWriter.fs";
             Include "DefaultTasks.fs";
             Include "Solutions.fs";

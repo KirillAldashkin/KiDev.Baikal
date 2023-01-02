@@ -14,14 +14,6 @@ module Projects =
         Depedencies = [];
     }
 
-    let private addSource name list (project: Project) = 
-        let newSrc = if project.Sources.ContainsKey name then
-                         List.append project.Sources[name] list
-                     else
-                         list
-        { project with Sources = project.Sources.Add(name, newSrc) }
-
-
     /// Creates a new C# project.
     let CS() = { emptyProject "cs" with Properties = Map [ ("ImplicitUsings", "true"); ("Nullable", "enable") ] }
 
@@ -40,43 +32,8 @@ module Projects =
     /// Sets "TargetPlatform" property of a project.
     let TargetPlatform kind (project: Project) = { project with TargetFrameworkPlatform = if kind = "" then "" else $"-{kind}" }
 
-    /// Adds "Compile" sources to a project
-    let Compile list (project: Project) = addSource "Compile" list project
-
-    /// Adds "EmbeddedResource" sources to a project
-    let EmbeddedResource list (project: Project) = addSource "EmbeddedResource" list project
-
-    /// Adds "None" sources to a project
-    let None list (project: Project) = addSource "None" list project
-
-    /// Adds depedencies to a project.
-    let Depedencies list (project: Project) = { project with Depedencies = List.append project.Depedencies list }
-
-    /// Creates an "Include" item.
-    let Include cont:Source = { Content = cont; Type = "Include"; CopyToOutputDirectory = "Never"; }
-
-    /// Creates an "Exclude" item
-    let Exclude cont:Source = { Content = cont; Type = "Exclude"; CopyToOutputDirectory = "Never"; }
-
-    /// Creates an "Remove" item
-    let Remove cont:Source = { Content = cont; Type = "Remove"; CopyToOutputDirectory = "Never"; }
-
-    /// Creates an "Update" item
-    let Update cont:Source = { Content = cont; Type = "Update"; CopyToOutputDirectory = "Never"; }
-
-    let CopyToOutput copy (item:Source) = { item with CopyToOutputDirectory = copy }
-    let Never = "Never"
-    let Always = "Always"
-    let OnlyNew = "PreserveNewest"
-
     /// Sets property of a project.
     let Prop name value (project: Project) = { project with Properties = project.Properties.Add(name, value) }
-
-    /// Creates a NuGet depedency.
-    let NuGet id version = NuGet { Id = id; Version = version; }
-
-    /// Creates a project depedency.
-    let Project name = Project { Name = name; ResolvedPath = ""; }
 
     /// Sets "LangVersion" of a project.
     let LangVersion vers (project: Project) = project |> Prop "LangVersion" (string vers)

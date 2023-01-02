@@ -49,7 +49,7 @@ module Solutions =
         let newParams = { solution.Parameters with Arguments = newArgs }
         { solution with Parameters = newParams } 
 
-    /// Sets a argument in a solution.
+    /// Sets target project for this solution.
     let Target name (solution: Solution) = 
         let newParams = { solution.Parameters with Target = name }
         { solution with Parameters = newParams } 
