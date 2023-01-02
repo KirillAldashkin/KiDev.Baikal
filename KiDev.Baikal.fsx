@@ -1,4 +1,4 @@
-#r "bin/Debug/netstandard2.0/KiDev.Baikal.dll"
+#r "nuget: KiDev.Baikal, 0.3.0"
 open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
