@@ -1,7 +1,7 @@
 ﻿namespace KiDev.Baikal
 
 [<AutoOpen>]
-module Projects =
+module ProjectsSources =
     let private addSource name list (project: Project) = 
         let newSrc = if project.Sources.ContainsKey name then
                          List.append project.Sources[name] list

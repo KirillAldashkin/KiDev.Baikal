@@ -9,7 +9,7 @@ module Runner =
         let sep = Path.DirectorySeparatorChar
         for folder in from.Folder.Split sep do
             downPath <- downPath + (if folder = "." then "." else "..") + sep.ToString()
-        let project = List.find(fun p -> p.Name = depedency.Name) solution.Projects
+        let project = solution.Projects |> List.find (fun p -> p.Name = depedency.Name)
         Depedency.Project { depedency with ResolvedPath = Path.Combine(downPath, project.Folder, $"{project.Name}.{project.Language}proj") }
 
     let private validateProject (solution: Solution) (project: Project): Result<Project, string> =
@@ -72,7 +72,6 @@ module Runner =
                                     | Project proj -> resolve solution project proj ]
         { project with Depedencies = checkedDeps }
 
-
     /// Runs solution.
     let run (solution: Solution) =
         let mutable solution = solution
@@ -82,9 +81,13 @@ module Runner =
         let mutable checkedProjects: Project list = [ for project in solution.Projects do updateDepedencies solution project ]
         
         printfn "Validating and writing projects..."
-        checkedProjects <-  [ for project in checkedProjects do updateProject solution project ]
+        checkedProjects <- [ for project in checkedProjects do updateProject solution project ]
         solution <- { solution with Projects = checkedProjects }
         
+        match solution.SlnFile with
+            | ValueSome file -> writeSlnFile file solution
+            | ValueNone -> ()
+
         printfn "Finding target..."
         let mutable newParams = solution.Parameters
         if solution.Projects.Length = 1 then

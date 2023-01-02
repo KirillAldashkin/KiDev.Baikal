@@ -1,7 +1,14 @@
-#r "nuget: KiDev.Baikal, 0.2.3"
+#r "bin/Debug/netstandard2.0/KiDev.Baikal.dll"
 open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
+    |> SlnFile(Unnamed
+        |> AddFolder "files" [
+            SlnItem ".gitignore";
+            SlnItem "README.md";
+            SlnItem "LICENSE";
+            SlnItem "KiDev.Baikal.fsx";
+        ])
     |> AddProject(FS()
         |> TargetFramework "netstandard2.0"
         |> Prop "Description" "Use short F# scripts to define .NET projects and solutions!"
@@ -25,6 +32,7 @@ Solution(__SOURCE_DIRECTORY__)
             Include "XMLWriter.fs";
             Include "DefaultTasks.fs";
             Include "Solutions.fs";
+            Include "Solutions.SlnGeneration.fs";
             Include "Runner.fs"
         ])
     |> run

@@ -8,7 +8,7 @@ module DefaultTasks =
     let private _dotnet command (solution: Solution) =
         let mutable command = command
         if command <> "" then
-            let target = List.find (fun proj -> proj.Name = solution.Parameters.Target) solution.Projects
+            let target = solution.Projects |> List.find (fun proj -> proj.Name = solution.Parameters.Target)
             let targetPath = Path.Combine(target.Folder, $"{target.Name}.{target.Language}proj")
             command <- command.Replace("$project$", targetPath)
         for pair in solution.Parameters.Arguments do

@@ -1,7 +1,7 @@
 ﻿namespace KiDev.Baikal
 
 [<AutoOpen>]
-module Projects =
+module ProjectsDepedencies =
     /// Adds depedencies to a project.
     let Depedencies list (project: Project) = { project with Depedencies = List.append project.Depedencies list }
 

@@ -39,7 +39,24 @@ type Parameters = {
     Arguments: Map<string, string>
 }
 
+type SolutionItemFile = {
+    RelativePath: string
+}
+and SolutionItemFolder = {
+    Name: string
+    Child: SolutionItem list
+}
+and SolutionItem = 
+    | SlnItemFile of SolutionItemFile
+    | SlnItemFolder of SolutionItemFolder
+
+type SolutionFile = {
+    Name: ValueOption<string>
+    RootItems: SolutionItemFolder list
+}
+
 type Solution = {
+    SlnFile: ValueOption<SolutionFile>
     Parameters: Parameters
     Directory: string
     Projects: Project list

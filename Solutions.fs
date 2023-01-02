@@ -32,6 +32,7 @@ module Solutions =
 
     /// Creates a new solution in a specified folder.
     let Solution folder = {
+        SlnFile = ValueNone;
         Parameters = {
             Target = "";
             Arguments = cliArgs;
