@@ -33,7 +33,9 @@ module Runner =
     let ( *? ) a b = (if a = null then b else a)
 
     let private writeProject (solution: Solution) (project: Project) =
-        let path = Path.Combine(solution.Directory, project.Folder, $"{project.Name}.{project.Language}proj")
+        let folder = Path.Combine(solution.Directory, project.Folder)
+        Directory.CreateDirectory(folder) |> ignore
+        let path = Path.Combine(folder, $"{project.Name}.{project.Language}proj")
         let writer = new StreamWriter(path)
         let xml = XMLWriter(writer)
         xml.tagGroup("Project", $"Sdk=\"{project.Sdk}\"", fun () -> 

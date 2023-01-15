@@ -96,9 +96,9 @@ module SolutionsSlnGenerator =
 
         if nesting.Count > 0 then 
             writer.WriteLine("Global")
-            writer.WriteLine("GlobalSection(NestedProjects) = preSolution")
+            writer.WriteLine("\tGlobalSection(NestedProjects) = preSolution")
             for (child, parent) in nesting do
                 writer.WriteLine($"\t\t{guidStr child} = {guidStr parent}")
-            writer.WriteLine("EndGlobalSection")
+            writer.WriteLine("\tEndGlobalSection")
             writer.WriteLine("EndGlobal")
         writer.Close()

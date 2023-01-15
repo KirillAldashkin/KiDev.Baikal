@@ -2,9 +2,17 @@
 open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
+    |> SlnFile (Unnamed |>
+        AddFolder "files" [
+            SlnItem "KiDev.Baikal.fsx";
+            SlnItem ".gitignore";
+            SlnItem "README.md";
+            SlnItem "LICENSE";
+        ];
+    )
     |> AddProject(FS()
         |> TargetFramework "netstandard2.0"
-        |> NuGetPackaging "KiDev.Baikal" "0.3.0" (PackInfo
+        |> NuGetPackaging "KiDev.Baikal" "0.3.1" (PackInfo
             |> Description "Use short F# scripts to define .NET projects and solutions!"
             |> License "MIT"
             |> Authors [ "AldashkinKirill" ])
