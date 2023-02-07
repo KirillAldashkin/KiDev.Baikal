@@ -4,3 +4,4 @@
 **/*.*proj
 *.sln
 .fake
+Examples/Tasks/*.zip

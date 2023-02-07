@@ -23,6 +23,9 @@ module Projects =
     /// Sets name of a project.
     let Name name (project: Project) = { project with Name = name }
 
+    /// Sets SDK of a project ('@' is replaced with 'Microsoft.NET.Sdk').
+    let Sdk (sdk: string) (project: Project) = { project with Sdk = sdk.Replace("@", "Microsoft.NET.Sdk") }
+
     /// Sets folder of a project.
     let Folder folder (project: Project) = { project with Folder = folder }
 

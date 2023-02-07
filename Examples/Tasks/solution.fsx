@@ -1,5 +1,15 @@
 #r "../../bin/Debug/netstandard2.0/KiDev.Baikal.dll"
 open KiDev.Baikal
+open System.IO
+open System.IO.Compression
+
+let (/) a b = Path.Combine(a, b)
+
+let platforms = [
+    ("win-x64", "Tasks.exe"); 
+    ("linux-x64", "Tasks"); 
+    ("osx-x64", "Tasks")
+]
 
 Solution(__SOURCE_DIRECTORY__)
     |> AddProject(FS()
@@ -8,6 +18,16 @@ Solution(__SOURCE_DIRECTORY__)
         |> Prop "PublishTrimmed" "true"
         |> Compile [ Include "Program.fs" ])
     |> AddTask "publish" (fun sol -> 
-        for rid in ["win-x86"; "win-x64"; "linux-x64"; "linux-arm"; "linux-arm64"; "osx-x64"; "osx.11.0-arm64" ] do 
-            sol.dotnet $"publish $project$ -c Release -r {rid} --self-contained")
+        printfn "Building..."
+        for (rid, _) in platforms do 
+            sol.dotnet $"publish $project$ -c Release -r {rid} --self-contained"
+        use str = File.Create("executables.zip")
+        printfn "Packaging..."
+        let arch = new ZipArchive(str, ZipArchiveMode.Create)
+        for (rid, execName) in platforms do
+            let path = sol.Directory / "bin" / "Release" / "net7.0" / rid / "publish" / execName
+            use toArch = arch.CreateEntry($"{rid}-{execName}", CompressionLevel.SmallestSize).Open()
+            use fromFile = File.OpenRead(path)
+            fromFile.CopyTo(toArch)
+        printfn "Done")
     |> run

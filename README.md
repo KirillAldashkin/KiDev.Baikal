@@ -1,6 +1,7 @@
 [![Nuget](https://img.shields.io/nuget/v/kidev.baikal?style=plastic)](https://www.nuget.org/packages/KiDev.Baikal)
 # KiDev.Baikal
 **Use short F# scripts to define .NET projects and solutions!**
+> This **is not a build system**, but just a nicer alternative to the `.__proj` and `.sln` files.
 
 # How to use
 1) Create and open a F# script file.
@@ -18,7 +19,7 @@ Solution(__SOURCE_DIRECTORY__) // F# literal to specify the directory that conta
         |> Compile [ Include "Program.fs" ])
     |> run
 ```
-4) Run `dotnet fsi your_script.fsx`. This will generate `.*proj` and `.sln` files based on your script.
+4) Run `dotnet fsi your_script.fsx`. This will generate `.*proj` (and optionally, `.sln`) files based on your script.
 
 # Example
 [Script file](https://github.com/KirillAldashkin/KiDev.Baikal/blob/main/KiDev.Baikal.fsx) for this project.
@@ -26,3 +27,9 @@ Also look to `Examples\` folder.
 
 # Status
 Currently this is a prototype.
+
+Things to do before releasing `1.0.0`:
+1) Tasks depedency/error handling
+2) Bunch of helper functions to write tasks
+3) Solution script and generated files timestamping
+4) Support more features of `.**proj` files

@@ -4,7 +4,7 @@ open KiDev.Baikal
 Solution(__SOURCE_DIRECTORY__)
     |> AddProject(FS()
         |> TargetFramework "netstandard2.0"
-        |> NuGetPackaging "KiDev.Baikal" "0.3.1" (PackInfo
+        |> NuGetPackaging "KiDev.Baikal" "0.3.2" (PackInfo
             |> Description "Use short F# scripts to define .NET projects and solutions!"
             |> License "MIT"
             |> Authors [ "AldashkinKirill" ])

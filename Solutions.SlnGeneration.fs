@@ -10,7 +10,7 @@ module SolutionsSlnGenerator =
     let SlnFile file (solution: Solution) =
         { solution with SlnFile = ValueSome(file) }
 
-    /// New unnamed `.sln` file
+    /// New `.sln` file with default name
     let Unnamed = { 
         Name = ValueNone;
         RootItems = list.Empty
