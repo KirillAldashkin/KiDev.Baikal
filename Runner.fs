@@ -74,10 +74,31 @@ module Runner =
                                     | Project proj -> resolve solution project proj ]
         { project with Depedencies = checkedDeps }
 
+    #if DEBUG
+    let private connectDebugger() = 
+        if not System.Diagnostics.Debugger.IsAttached then
+            printfn "Debug mode: [W]ait for debugger, [L]aunch debugger"
+            printf "[W/L/any other = don't debug]? "
+            let ch = System.Char.ToLower(System.Console.ReadKey().KeyChar)
+            printfn ""
+            if ch = 'l' then 
+                System.Diagnostics.Debugger.Launch() |> ignore
+            else if ch = 'w' then
+                while not System.Diagnostics.Debugger.IsAttached do
+                    System.Threading.Thread.Sleep(500)
+            printfn "Press any key to continue..."
+            System.Console.ReadKey(true) |> ignore
+            printfn ""
+    #endif
+
     /// Runs solution.
     let run (solution: Solution) =
         let mutable solution = solution
         printfn "\"Baikal\" tool by Aldashkin Kirill"
+
+        #if DEBUG
+        connectDebugger()
+        #endif
 
         printfn "Resolving depedencies..."
         let mutable checkedProjects: Project list = [ for project in solution.Projects do updateDepedencies solution project ]
