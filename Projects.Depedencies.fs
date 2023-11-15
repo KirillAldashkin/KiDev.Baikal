@@ -8,8 +8,7 @@ module ProjectsDepedencies =
     /// Creates a NuGet depedency.
     let NuGet id version = NuGet { 
         Id = id; Version = version; 
-        IncludeAssets = "all"; ExcludeAssets = "none"; 
-        PrivateAssets = "contentfiles;analyzers;build" 
+        IncludeAssets = ""; ExcludeAssets = ""; PrivateAssets = "" 
     }
 
     /// Creates a project depedency.

@@ -55,11 +55,17 @@ module Runner =
                 xml.tagGroup("ItemGroup", fun() -> 
                     for depedency in project.Depedencies do
                         match depedency with
-                            | NuGet nuget -> xml.tag(
-                                $"PackageReference Include=\"{nuget.Id}\" Version=\"{nuget.Version}\" " + 
-                                $"IncludeAssets=\"{nuget.IncludeAssets}\" ExcludeAssets=\"{nuget.ExcludeAssets}\" " + 
-                                $"PrivateAssets=\"{nuget.PrivateAssets}\"")
-                            | Project proj -> xml.tag($"ProjectReference Include=\"{proj.ResolvedPath}\"")
+                            | NuGet nuget -> 
+                                let includ = if nuget.IncludeAssets.Length = 0 then "" else
+                                             $"IncludeAssets=\"{nuget.IncludeAssets}\"";
+                                let exclud = if nuget.ExcludeAssets.Length = 0 then "" else
+                                             $"ExcludeAssets=\"{nuget.ExcludeAssets}\"";
+                                let privat = if nuget.PrivateAssets.Length = 0 then "" else
+                                             $"PrivateAssets=\"{nuget.PrivateAssets}\"";
+                                xml.tag($"PackageReference Include=\"{nuget.Id}\" " + 
+                                    $"Version=\"{nuget.Version}\" {includ} {exclud} {privat}")
+                            | Project proj -> 
+                                xml.tag($"ProjectReference Include=\"{proj.ResolvedPath}\"")
                 )
         )
         writer.Close()
