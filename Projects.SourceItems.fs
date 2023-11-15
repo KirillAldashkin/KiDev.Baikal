@@ -31,6 +31,7 @@ module ProjectsSources =
     /// Creates an "Update" item
     let Update cont:Source = { Content = cont; Type = "Update"; CopyToOutputDirectory = "Never"; }
 
+    /// Sets "CopyToOutput" for an item
     let CopyToOutput copy (item:Source) = { item with CopyToOutputDirectory = copy }
     let Never = "Never"
     let Always = "Always"

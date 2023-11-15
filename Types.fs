@@ -3,6 +3,9 @@
 type NuGetDepedency = {
     Id: string
     Version: string
+    IncludeAssets: string
+    ExcludeAssets: string
+    PrivateAssets: string
 }
 
 type ProjectDepedency = {

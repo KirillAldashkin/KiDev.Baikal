@@ -55,7 +55,10 @@ module Runner =
                 xml.tagGroup("ItemGroup", fun() -> 
                     for depedency in project.Depedencies do
                         match depedency with
-                            | NuGet nuget -> xml.tag($"PackageReference Include=\"{nuget.Id}\" Version=\"{nuget.Version}\"")
+                            | NuGet nuget -> xml.tag(
+                                $"PackageReference Include=\"{nuget.Id}\" Version=\"{nuget.Version}\" " + 
+                                $"IncludeAssets=\"{nuget.IncludeAssets}\" ExcludeAssets=\"{nuget.ExcludeAssets}\" " + 
+                                $"PrivateAssets=\"{nuget.PrivateAssets}\"")
                             | Project proj -> xml.tag($"ProjectReference Include=\"{proj.ResolvedPath}\"")
                 )
         )
@@ -70,7 +73,7 @@ module Runner =
     let private updateDepedencies (solution: Solution) (project: Project) = 
         let checkedDeps = [ for depedency in project.Depedencies do 
                                 match depedency with
-                                    | NuGet nuget -> NuGet nuget.Id nuget.Version
+                                    | NuGet nuget -> Depedency.NuGet nuget
                                     | Project proj -> resolve solution project proj ]
         { project with Depedencies = checkedDeps }
 
