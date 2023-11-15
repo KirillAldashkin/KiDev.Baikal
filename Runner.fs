@@ -47,9 +47,13 @@ module Runner =
                 if not pair.Value.IsEmpty then
                     xml.tagGroup("ItemGroup", fun() -> 
                         for source in pair.Value do
-                            xml.tagGroup(pair.Key, $"{source.Type}=\"{source.Content}\"", fun () -> 
-                                xml.tag("CopyToOutputDirectory", source.CopyToOutputDirectory *? "Never")
-                            )
+                            let srcVal = $"{source.Type}=\"{source.Content}\"";
+                            if source.CopyToOutputDirectory.Length = 0 then
+                                xml.tag(pair.Key, srcVal)
+                            else
+                                xml.tagGroup(pair.Key, srcVal, fun () -> 
+                                    xml.tag("CopyToOutputDirectory", source.CopyToOutputDirectory)
+                                )
                     )
             if not project.Depedencies.IsEmpty then
                 xml.tagGroup("ItemGroup", fun() -> 

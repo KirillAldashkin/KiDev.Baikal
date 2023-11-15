@@ -20,16 +20,16 @@ module ProjectsSources =
     let None list (project: Project) = AddSource "None" list project
 
     /// Creates an "Include" item.
-    let Include cont:Source = { Content = cont; Type = "Include"; CopyToOutputDirectory = "Never"; }
+    let Include cont:Source = { Content = cont; Type = "Include"; CopyToOutputDirectory = ""; }
 
     /// Creates an "Exclude" item
-    let Exclude cont:Source = { Content = cont; Type = "Exclude"; CopyToOutputDirectory = "Never"; }
+    let Exclude cont:Source = { Content = cont; Type = "Exclude"; CopyToOutputDirectory = ""; }
 
     /// Creates an "Remove" item
-    let Remove cont:Source = { Content = cont; Type = "Remove"; CopyToOutputDirectory = "Never"; }
+    let Remove cont:Source = { Content = cont; Type = "Remove"; CopyToOutputDirectory = ""; }
 
     /// Creates an "Update" item
-    let Update cont:Source = { Content = cont; Type = "Update"; CopyToOutputDirectory = "Never"; }
+    let Update cont:Source = { Content = cont; Type = "Update"; CopyToOutputDirectory = ""; }
 
     /// Sets "CopyToOutput" for an item
     let CopyToOutput copy (item:Source) = { item with CopyToOutputDirectory = copy }
