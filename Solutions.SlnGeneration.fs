@@ -11,13 +11,16 @@ module SolutionsSlnGenerator =
         { solution with SlnFile = ValueSome(file) }
 
     /// New `.sln` file with default name
-    let Unnamed = { 
+    let DefaultName = { 
         Name = ValueNone;
         RootItems = list.Empty
     }
 
     /// New named `.sln` file
-    let Named name = { Unnamed with Name = ValueSome(name) }
+    let Named name = { 
+        Name = ValueSome(name);
+        RootItems = list.Empty    
+    }
 
     /// Adds top-level folder to solution.
     let AddFolder name items (file: SolutionFile) =
