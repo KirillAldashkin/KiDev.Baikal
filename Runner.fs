@@ -1,4 +1,5 @@
 ﻿namespace KiDev.Baikal
+[<assembly:AutoOpen("KiDev.Baikal")>] do()
 
 open System.IO
 
@@ -49,7 +50,7 @@ module Runner =
                         for source in pair.Value do
                             let srcVal = $"{source.Type}=\"{source.Content}\"";
                             if source.CopyToOutputDirectory.Length = 0 then
-                                xml.tag(pair.Key, srcVal)
+                                xml.tag($"{pair.Key} {srcVal}")
                             else
                                 xml.tagGroup(pair.Key, srcVal, fun () -> 
                                     xml.tag("CopyToOutputDirectory", source.CopyToOutputDirectory)

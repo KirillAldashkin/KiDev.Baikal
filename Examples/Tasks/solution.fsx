@@ -1,5 +1,4 @@
 #r "../../bin/Debug/netstandard2.0/KiDev.Baikal.dll"
-open KiDev.Baikal
 open System.IO
 open System.IO.Compression
 

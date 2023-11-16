@@ -1,5 +1,4 @@
 #r "../../bin/Debug/netstandard2.0/KiDev.Baikal.dll"
-open KiDev.Baikal
 
 Solution(__SOURCE_DIRECTORY__)
     |> AddProject(CS()
@@ -12,7 +11,6 @@ Solution(__SOURCE_DIRECTORY__)
         |> Name "Windows"
         |> Folder "Windows"
         |> OutputType WinExe
-        |> Depedencies [
-            Project "Core"
-        ])
+        |> Depedencies [ Project "Core" ])
+    |> SlnFile DefaultName
     |> run

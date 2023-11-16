@@ -1,18 +1,17 @@
 [![Nuget](https://img.shields.io/nuget/v/kidev.baikal?style=plastic)](https://www.nuget.org/packages/KiDev.Baikal)
 # KiDev.Baikal
 **Use short F# scripts to define .NET projects and solutions!**
-> This **is not a build system**, but just a nicer alternative to the `.__proj` and `.sln` files.
+> This is just a nicer alternative to `.*proj` and `.sln` files. If you need a fully-featured build system, consider using `Fake` or `Nuke`.
 
 # How to use
-1) Create and open a F# script file.
-2) Import this library and `open` module:
+1) Create and open a F# script file and import this library:
 ```fs
-#r "nuget: KiDev.Baikal, 0.3.1"
-open KiDev.Baikal
+#r "nuget: KiDev.Baikal"
 ```
-3) Write definition of your solution:
+2) Write definition of your solution:
 ```fs
-Solution(__SOURCE_DIRECTORY__) // F# literal to specify the directory that contains this script
+// __SOURCE_DIRECTORY__ - F# literal, path to directory that contains this script
+Solution(__SOURCE_DIRECTORY__)
     |> AddProject(FS()
         |> TargetFramework "net6.0"
         |> OutputType Exe
@@ -29,7 +28,8 @@ Also look to `Examples\` folder.
 Currently this is a prototype.
 
 Things to do before releasing `1.0.0`:
-1) Tasks depedency/error handling
+1) Tasks dependency/error handling
 2) Bunch of helper functions to write tasks
 3) Solution script and generated files timestamping
 4) Support more features of `.**proj` files
+5) Maybe, .NET tool or even a VS extension?
